@@ -13,6 +13,7 @@
   "dependencies": {
     "dotenv": "^9.0.2",
     "koa": "^2.13.1",
+    "koa-router": "^10.0.0",
     "nodemon": "^2.0.7"
   }
 }
