@@ -374,7 +374,7 @@ const { DataTypes } = require('sequelize')
 
 const seq = require('../db/seq')
 
-// 创建模型(Model zd_user -> zd_users)
+// 创建模型(Model zd_user -> 表 zd_users)
 const User = seq.define('zd_user', {
   // id 会被sequelize自动创建, 管理
   user_name: {
@@ -400,5 +400,68 @@ const User = seq.define('zd_user', {
 // User.sync({ force: true })
 
 module.exports = User
+```
+
+# 九. 添加用户入库
+
+所有数据库的操作都在Service层完成, Service调用Model完成数据库操作
+
+改写`src/service/user.service.js`
+
+```js
+const User = require('../model/use.model')
+
+class UserService {
+  async createUser(user_name, password) {
+    // 插入数据
+    // User.create({
+    //   // 表的字段
+    //   user_name: user_name,
+    //   password: password
+    // })
+
+    // await表达式: promise对象的值
+    const res = await User.create({ user_name, password })
+    // console.log(res)
+
+    return res.dataValues
+  }
+}
+
+module.exports = new UserService()
+
+```
+
+同时, 改写`user.controller.js`
+
+```js
+const { createUser } = require('../service/user.service')
+
+class UserController {
+  async register(ctx, next) {
+    // 1. 获取数据
+    // console.log(ctx.request.body)
+    const { user_name, password } = ctx.request.body
+    // 2. 操作数据库
+    const res = await createUser(user_name, password)
+    // console.log(res)
+    // 3. 返回结果
+    ctx.body = {
+      code: 0,
+      message: '用户注册成功',
+      result: {
+        id: res.id,
+        user_name: res.user_name,
+      },
+    }
+  }
+
+  async login(ctx, next) {
+    ctx.body = '登录成功'
+  }
+}
+
+module.exports = new UserController()
+
 ```
 
