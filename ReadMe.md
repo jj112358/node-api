@@ -465,3 +465,96 @@ module.exports = new UserController()
 
 ```
 
+# 十. 错误处理
+
+在控制器中,  对不同的错误进行处理, 返回不同的提示错误提示, 提高代码质量
+
+```js
+const { createUser, getUerInfo } = require('../service/user.service')
+
+class UserController {
+  async register(ctx, next) {
+    // 1. 获取数据
+    // console.log(ctx.request.body)
+    const { user_name, password } = ctx.request.body
+
+    // 合法性
+    if (!user_name || !password) {
+      console.error('用户名或密码为空', ctx.request.body)
+      ctx.status = 400
+      ctx.body = {
+        code: '10001',
+        message: '用户名或密码为空',
+        result: '',
+      }
+      return
+    }
+    // 合理性
+    if (getUerInfo({ user_name })) {
+      ctx.status = 409
+      ctx.body = {
+        code: '10002',
+        message: '用户已经存在',
+        result: '',
+      }
+      return
+    }
+    // 2. 操作数据库
+    const res = await createUser(user_name, password)
+    // console.log(res)
+    // 3. 返回结果
+    ctx.body = {
+      code: 0,
+      message: '用户注册成功',
+      result: {
+        id: res.id,
+        user_name: res.user_name,
+      },
+    }
+  }
+
+  async login(ctx, next) {
+    ctx.body = '登录成功'
+  }
+}
+
+module.exports = new UserController()
+
+```
+
+在service中封装函数
+
+```js
+const User = require('../model/use.model')
+
+class UserService {
+  async createUser(user_name, password) {
+    // 插入数据
+    // await表达式: promise对象的值
+    const res = await User.create({ user_name, password })
+    // console.log(res)
+
+    return res.dataValues
+  }
+
+  async getUerInfo({ id, user_name, password, is_admin }) {
+    const whereOpt = {}
+
+    id && Object.assign(whereOpt, { id })
+    user_name && Object.assign(whereOpt, { user_name })
+    password && Object.assign(whereOpt, { password })
+    is_admin && Object.assign(whereOpt, { is_admin })
+
+    const res = await User.findOne({
+      attributes: ['id', 'user_name', 'password', 'is_admin'],
+      where: whereOpt,
+    })
+
+    return res ? res.dataValues : null
+  }
+}
+
+module.exports = new UserService()
+
+```
+
