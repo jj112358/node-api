@@ -652,3 +652,57 @@ const errHandler = require('./errHandler')
 app.on('error', errHandler)
 ```
 
+# 十二. 加密
+
+在将密码保存到数据库之前, 要对密码进行加密处理
+
+123123abc (加盐) 加盐加密
+
+## 1 安装bcryptjs
+
+```
+npm i bcryptjs
+```
+
+## 2 编写加密中间件
+
+```js
+const crpytPassword = async (ctx, next) => {
+  const { password } = ctx.request.body
+
+  const salt = bcrypt.genSaltSync(10)
+  // hash保存的是 密文
+  const hash = bcrypt.hashSync(password, salt)
+
+  ctx.request.body.password = hash
+
+  await next()
+}
+```
+
+## 3 在router中使用
+
+改写`user.router.js`
+
+```js
+const Router = require('koa-router')
+
+const {
+  userValidator,
+  verifyUser,
+  crpytPassword,
+} = require('../middleware/user.middleware')
+const { register, login } = require('../controller/user.controller')
+
+const router = new Router({ prefix: '/users' })
+
+// 注册接口
+router.post('/register', userValidator, verifyUser, crpytPassword, register)
+
+// 登录接口
+router.post('/login', login)
+
+module.exports = router
+
+```
+

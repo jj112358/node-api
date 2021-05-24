@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "dotenv": "^9.0.2",
     "koa": "^2.13.1",
     "koa-body": "^4.2.0",

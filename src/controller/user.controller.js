@@ -1,6 +1,7 @@
 const { createUser } = require('../service/user.service')
 
 const { userRegisterError } = require('../constant/err.type')
+
 class UserController {
   async register(ctx, next) {
     // 1. 获取数据
