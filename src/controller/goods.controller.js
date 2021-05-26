@@ -1,11 +1,16 @@
 const path = require('path')
 
-const { fileUploadError } = require('../constant/err.type')
+const { fileUploadError, unSupportedFileType } = require('../constant/err.type')
 class GoodsController {
   async upload(ctx, next) {
     // console.log(ctx.request.files)
     const { file } = ctx.request.files
+    // console.log(file)
+    const fileTypes = ['image/jpeg', 'image/png']
     if (file) {
+      if (!fileTypes.includes(file.type)) {
+        return ctx.app.emit('error', unSupportedFileType, ctx)
+      }
       ctx.body = {
         code: 0,
         message: '商品图片上传成功',
