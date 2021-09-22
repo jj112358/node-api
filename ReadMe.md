@@ -1,6 +1,6 @@
 # 一. 项目的初始化
 
-## 1 npm初始化
+## 1 npm 初始化
 
 ```
 npm init -y
@@ -10,25 +10,25 @@ npm init -y
 
 - 记录项目的依赖
 
-## 2 git初始化
+## 2 git 初始化
 
 ```
 git init
 ```
 
-生成'.git'隐藏文件夹, git的本地仓库
+生成'.git'隐藏文件夹, git 的本地仓库
 
-## 3 创建ReadMe文件
+## 3 创建 ReadMe 文件
 
 # 二. 搭建项目
 
-## 1 安装Koa框架
+## 1 安装 Koa 框架
 
 ```
 npm install koa
 ```
 
-## 2 编写最基本的app
+## 2 编写最基本的 app
 
 创建`src/main.js`
 
@@ -56,7 +56,7 @@ app.listen(3000, () => {
 
 ## 1 自动重启服务
 
-安装nodemon工具
+安装 nodemon 工具
 
 ```
 npm i nodemon -D
@@ -121,9 +121,9 @@ app.listen(APP_PORT, () => {
 
 # 四. 添加路由
 
-路由: 根据不同的URL, 调用对应处理函数
+路由: 根据不同的 URL, 调用对应处理函数
 
-## 1 安装koa-router
+## 1 安装 koa-router
 
 ```
 npm i koa-router
@@ -153,7 +153,7 @@ router.get('/', (ctx, next) => {
 module.exports = router
 ```
 
-## 3 改写main.js
+## 3 改写 main.js
 
 ```js
 const Koa = require('koa')
@@ -173,7 +173,7 @@ app.listen(APP_PORT, () => {
 
 # 五. 目录结构优化
 
-## 1 将http服务和app业务拆分
+## 1 将 http 服务和 app 业务拆分
 
 创建`src/app/index.js`
 
@@ -203,7 +203,7 @@ app.listen(APP_PORT, () => {
 
 ## 2 将路由和控制器拆分
 
-路由: 解析URL, 分布给控制器对应的方法
+路由: 解析 URL, 分布给控制器对应的方法
 
 控制器: 处理不同的业务
 
@@ -241,9 +241,9 @@ class UserController {
 module.exports = new UserController()
 ```
 
-# 六. 解析body
+# 六. 解析 body
 
-## 1 安装koa-body
+## 1 安装 koa-body
 
 ```
 npm i koa-body
@@ -280,12 +280,11 @@ class UserController {
 }
 
 module.exports = new UserController()
-
 ```
 
-## 4 拆分service层
+## 4 拆分 service 层
 
-service层主要是做数据库处理
+service 层主要是做数据库处理
 
 创建`src/service/user.service.js`
 
@@ -300,9 +299,9 @@ class UserService {
 module.exports = new UserService()
 ```
 
-# 七. 集成sequlize
+# 七. 集成 sequlize
 
-sequelize ORM数据库工具
+sequelize ORM 数据库工具
 
 ORM: 对象关系映射
 
@@ -311,7 +310,7 @@ ORM: 对象关系映射
 - 数据表字段对应对象的属性
 - 数据表的操作对应对象的方法
 
-## 1 安装sequelize
+## 1 安装 sequelize
 
 ```
 npm i mysql2 sequelize
@@ -342,7 +341,7 @@ seq
   .then(() => {
     console.log('数据库连接成功')
   })
-  .catch(err => {
+  .catch((err) => {
     console.log('数据库连接失败', err)
   })
 
@@ -361,11 +360,11 @@ MYSQL_PWD = 123456
 MYSQL_DB = zdsc
 ```
 
-# 八. 创建User模型
+# 八. 创建 User 模型
 
-## 1 拆分Model层
+## 1 拆分 Model 层
 
-sequelize主要通过Model对应数据表
+sequelize 主要通过 Model 对应数据表
 
 创建`src/model/user.model.js`
 
@@ -404,7 +403,7 @@ module.exports = User
 
 # 九. 添加用户入库
 
-所有数据库的操作都在Service层完成, Service调用Model完成数据库操作
+所有数据库的操作都在 Service 层完成, Service 调用 Model 完成数据库操作
 
 改写`src/service/user.service.js`
 
@@ -429,7 +428,6 @@ class UserService {
 }
 
 module.exports = new UserService()
-
 ```
 
 同时, 改写`user.controller.js`
@@ -462,12 +460,11 @@ class UserController {
 }
 
 module.exports = new UserController()
-
 ```
 
 # 十. 错误处理
 
-在控制器中,  对不同的错误进行处理, 返回不同的提示错误提示, 提高代码质量
+在控制器中, 对不同的错误进行处理, 返回不同的提示错误提示, 提高代码质量
 
 ```js
 const { createUser, getUerInfo } = require('../service/user.service')
@@ -519,10 +516,9 @@ class UserController {
 }
 
 module.exports = new UserController()
-
 ```
 
-在service中封装函数
+在 service 中封装函数
 
 ```js
 const User = require('../model/use.model')
@@ -555,7 +551,6 @@ class UserService {
 }
 
 module.exports = new UserService()
-
 ```
 
 # 十一. 拆分中间件
@@ -599,13 +594,12 @@ module.exports = {
   userValidator,
   verifyUser,
 }
-
 ```
 
 ## 2 统一错误处理
 
 - 在出错的地方使用`ctx.app.emit`提交错误
-- 在app中通过`app.on`监听
+- 在 app 中通过`app.on`监听
 
 编写统一的错误定义文件
 
@@ -658,7 +652,7 @@ app.on('error', errHandler)
 
 123123abc (加盐) 加盐加密
 
-## 1 安装bcryptjs
+## 1 安装 bcryptjs
 
 ```
 npm i bcryptjs
@@ -680,7 +674,7 @@ const crpytPassword = async (ctx, next) => {
 }
 ```
 
-## 3 在router中使用
+## 3 在 router 中使用
 
 改写`user.router.js`
 
@@ -703,12 +697,11 @@ router.post('/register', userValidator, verifyUser, crpytPassword, register)
 router.post('/login', login)
 
 module.exports = router
-
 ```
 
 # 十三. 登录验证
 
-流程: 
+流程:
 
 - 验证格式
 - 验证用户是否存在
@@ -809,7 +802,6 @@ module.exports = {
   crpytPassword,
   verifyLogin,
 }
-
 ```
 
 定义错误类型
@@ -847,7 +839,6 @@ module.exports = {
     result: '',
   },
 }
-
 ```
 
 改写路由
@@ -859,7 +850,7 @@ router.post('/login', userValidator, verifyLogin, login)
 
 # 十四. 用户的认证
 
-登录成功后, 给用户颁发一个令牌token, 用户在以后的每一次请求中携带这个令牌. 
+登录成功后, 给用户颁发一个令牌 token, 用户在以后的每一次请求中携带这个令牌.
 
 jwt: jsonwebtoken
 
@@ -867,15 +858,15 @@ jwt: jsonwebtoken
 - payload: 载荷
 - signature: 签名
 
-## 1 颁发token
+## 1 颁发 token
 
-### 1) 安装jsonwebtoken
+### 1) 安装 jsonwebtoken
 
 ```
 npm i jsonwebtoken
 ```
 
-### 2) 在控制器中改写login方法
+### 2) 在控制器中改写 login 方法
 
 ```js
 async login(ctx, next) {
@@ -909,7 +900,7 @@ JWT_SECRET = xzd
 
 ## 2 用户认证
 
-### 1) 创建auth中间件
+### 1) 创建 auth 中间件
 
 ```js
 const jwt = require('jsonwebtoken')
@@ -944,10 +935,9 @@ const auth = async (ctx, next) => {
 module.exports = {
   auth,
 }
-
 ```
 
-### 2) 改写router
+### 2) 改写 router
 
 ```js
 // 修改密码接口
@@ -957,3 +947,4 @@ router.patch('/', auth, (ctx, next) => {
 })
 ```
 
+新的内容
