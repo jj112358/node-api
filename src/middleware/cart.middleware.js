@@ -10,6 +10,8 @@ const validator = async (ctx, next) => {
     invalidGoodsID.result = err
     return ctx.app.emit('error', invalidGoodsID, ctx)
   }
+
+  await next()
 }
 module.exports = {
   validator,
