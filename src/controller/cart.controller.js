@@ -2,6 +2,7 @@ const {
   createOrUpdate,
   findCarts,
   updateCarts,
+  removeCarts,
 } = require('../service/cart.service')
 const { cartFormatError } = require('../constant/err.type')
 
@@ -49,6 +50,18 @@ class CartController {
     ctx.body = {
       code: 0,
       message: '更新购物车成功',
+      result: res,
+    }
+  }
+
+  async remove(ctx) {
+    const { ids } = ctx.request.body
+
+    const res = await removeCarts(ids)
+
+    ctx.body = {
+      code: 0,
+      message: '删除购物车成功',
       result: res,
     }
   }

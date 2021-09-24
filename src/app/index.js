@@ -19,6 +19,7 @@ app.use(
       uploadDir: path.join(__dirname, '../upload'),
       keepExtensions: true,
     },
+    parsedMethods: ['POST', 'PUT', 'PATCH', 'DELETE'],
   })
 )
 app.use(KoaStatic(path.join(__dirname, '../upload')))
