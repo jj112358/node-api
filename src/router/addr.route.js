@@ -8,7 +8,13 @@ const router = new Router({ prefix: '/address' })
 const { auth } = require('../middleware/auth.middleware')
 const { validator } = require('../middleware/addr.middleware')
 
-const { create, findAll, update } = require('../controller/addr.controller')
+const {
+  create,
+  findAll,
+  update,
+  remove,
+  setDefault,
+} = require('../controller/addr.controller')
 
 // 三. 编写路由规则
 // 3.1 添加接口: 登录, 格式
@@ -37,6 +43,12 @@ router.put(
   }),
   update
 )
+
+// 3.4 删除地址
+router.delete('/:id', auth, remove)
+
+// 3.5 设置默认
+router.patch('/:id', auth, setDefault)
 
 // 四. 导出router对象
 module.exports = router
