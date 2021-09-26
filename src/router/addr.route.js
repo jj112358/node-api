@@ -8,7 +8,7 @@ const router = new Router({ prefix: '/address' })
 const { auth } = require('../middleware/auth.middleware')
 const { validator } = require('../middleware/addr.middleware')
 
-const { create } = require('../controller/addr.controller')
+const { create, findAll } = require('../controller/addr.controller')
 
 // 三. 编写路由规则
 // 3.1 添加接口: 登录, 格式
@@ -22,6 +22,9 @@ router.post(
   }),
   create
 )
+
+// 3.2 获取地址列表
+router.get('/', auth, findAll)
 
 // 四. 导出router对象
 module.exports = router
