@@ -8,6 +8,8 @@ const router = new Router({ prefix: '/address' })
 const { auth } = require('../middleware/auth.middleware')
 const { validator } = require('../middleware/addr.middleware')
 
+const { create } = require('../controller/addr.controller')
+
 // 三. 编写路由规则
 // 3.1 添加接口: 登录, 格式
 router.post(
@@ -18,10 +20,7 @@ router.post(
     phone: { type: 'string', format: /^1\d{10}$/ },
     address: 'string',
   }),
-  (ctx) => {
-    console.log(ctx.state.user.id)
-    ctx.body = '添加地址成功'
-  }
+  create
 )
 
 // 四. 导出router对象
